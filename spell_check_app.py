@@ -142,43 +142,36 @@ st.markdown("""
 
 # Tiêu đề chính
 st.markdown('<h1 class="main-title">CHECK SPELLING</h1>', unsafe_allow_html=True)
+st.markdown('<div class="column-header">Nhập văn bản:</div>', unsafe_allow_html=True)
+input_text = st.text_area(
+    "",
+    key="input_text",
+    placeholder="Nhập văn bản cần kiểm tra chính tả..."
+)
 
-# Tạo 2 cột
-col1, col2 = st.columns(2, gap="large")
+st.markdown('<div class="column-header">Sửa lỗi:</div>', unsafe_allow_html=True)
 
-with col1:
-    st.markdown('<div class="column-header">Nhập văn bản:</div>', unsafe_allow_html=True)
-    input_text = st.text_area(
-        "",
-        height=300,
-        key="input_text",
-        placeholder="Nhập văn bản cần kiểm tra chính tả..."
+# Xử lý kiểm tra chính tả bằng hàm call()
+corrected_text = ""
+if input_text.strip():  # Chỉ xử lý khi có văn bản đầu vào
+    try:
+        corrected_text = call(input_text)
+    except Exception as e:
+        st.error(f"Lỗi khi xử lý văn bản: {str(e)}")
+        corrected_text = input_text  # Fallback về văn bản gốc nếu có lỗi
+
+# Hiển thị văn bản với highlighting
+if corrected_text:
+    highlighted_text = highlight_differences(input_text, corrected_text)
+    st.markdown(
+        f'<div class="highlighted-text">{highlighted_text}</div>',
+        unsafe_allow_html=True
     )
-
-with col2:
-    st.markdown('<div class="column-header">Sửa lỗi:</div>', unsafe_allow_html=True)
-    
-    # Xử lý kiểm tra chính tả bằng hàm call()
-    corrected_text = ""
-    if input_text.strip():  # Chỉ xử lý khi có văn bản đầu vào
-        try:
-            corrected_text = call(input_text)
-        except Exception as e:
-            st.error(f"Lỗi khi xử lý văn bản: {str(e)}")
-            corrected_text = input_text  # Fallback về văn bản gốc nếu có lỗi
-    
-    # Hiển thị văn bản với highlighting
-    if corrected_text:
-        highlighted_text = highlight_differences(input_text, corrected_text)
-        st.markdown(
-            f'<div class="highlighted-text">{highlighted_text}</div>',
-            unsafe_allow_html=True
-        )
-    else:
-        st.markdown(
-            '<div class="highlighted-text">Nhập văn bản bên trái để xem kết quả sửa lỗi...</div>',
-            unsafe_allow_html=True
-        )
+else:
+    st.markdown(
+        '<div class="highlighted-text">Nhập văn bản bên trên để xem kết quả sửa lỗi...</div>',
+        unsafe_allow_html=True
+    )
 
 
 # Footer
