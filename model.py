@@ -57,3 +57,7 @@ def call(sentence):
     guess = correct(sentence)
 
     return guess
+
+ask = "Tooi laf một người tốt"
+test = call(ask)
+print(test)
