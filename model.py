@@ -57,9 +57,3 @@ def call(sentence):
     guess = correct(sentence)
 
     return guess
-
-#sentence = "Hom lay tooi đi hoc"
-sentence ='Tôi ko yêu thích họk ngôn ngữ mớj'
-#sentence = 'Thnh pố Hồ Chí Mình là mộp địa điểm du lịch nổi tiếg'
-guess = call(sentence)
-print(guess)
